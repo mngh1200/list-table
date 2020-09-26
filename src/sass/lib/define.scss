@@ -1,0 +1,40 @@
+// 画面を切り替えるサイズ
+$display-size-1:720px;
+
+// ベースカラー
+$base-color-000: #f2f2f2;
+$base-color-100: #eeeeee;
+$base-color-200: #c0c0c0;
+ 
+// メインカラー
+$main-color: #949292;
+ 
+// アクセントカラー
+$accent-color:#007ea9;
+$accent-color-000:rgb(186,239,255);
+$accent-color-100:rgb(117,223,255);
+$accent-color-200:rgb(49,207,255);
+
+// その他の色
+$safe-color:#33ad5a;
+$safe-color-base:#d3f2dd;
+$warn-color:#ffc001;
+$warn-base:#fff2cc;
+$caution-color:#f53c39;
+$caution-color-base:#fdd8d7;
+
+//フォント
+$font-normal:'游ゴシック Medium', '游ゴシック体', 'Yu Gothic Medium', YuGothic, 'ヒラギノ角ゴ ProN', 'Hiragino Kaku Gothic ProN', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
+$font-color-normal:#535353;
+$font-color-hover:#949292;
+
+//px
+$header-hight:50px;
+
+// z-index
+$z-index-back:-1;
+$z-index-header:100;
+$z-index-close:200;
+$z-index-side:300;
+$z-index-popup:400;
+ 
