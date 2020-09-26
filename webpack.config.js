@@ -5,10 +5,10 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = [
   {
-    entry: './src/js/main.js',
+    entry: './src/js/listtable.js',
     output: {
       path: __dirname + '/dist', // 出力先ディレクトリ
-      filename: 'bundle.js'
+      filename: 'listtable.min.js'
     },
     devServer: {
       contentBase: path.resolve(__dirname, "dist"), // distディレクトリのファイルを確認する
@@ -36,7 +36,7 @@ module.exports = [
     },
     plugins:[
       // cssの出力先を指定する
-      new MiniCssExtractPlugin({ filename: 'css/[name].css' }),
+      new MiniCssExtractPlugin({ filename: 'css/listtable.min.css' }),
     ],
     optimization: {
       minimizer: [new OptimizeCSSAssetsPlugin({})],

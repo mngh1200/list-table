@@ -1,10 +1,61 @@
-<!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="content-type" charset="utf-8">
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="./css/listtable.min.css">
+<style>
+
+</style>
   </head>
   <body>
-    <script type="text/javascript" src="bundle.js"></script>
+    <div class="content">
+      <input type=button value="ソートテスト" onclick="listTable.sortTable(sortdata);"/>
+      <div class="table-area">
+        <div id="test-list-table">
+          <ul>
+            <li>
+              <script>
+                console.time('create Table');
+                var ROW_LEN = 50; // 行数
+                var COL_LEN = 5;   // 列数
+
+                for (var i = 1; i <= COL_LEN; i++) {
+                  document.writeln('<span>ヘッダー' + i + '</span>');
+                }
+              </script>
+            </li>
+
+          </ul>
+          <ul>
+            <script>
+              for (var i = 1; i <= ROW_LEN; i++) {
+                document.write('<li>');
+                for (var j = 1; j <= COL_LEN; j++) {
+                  document.write('<span>データ' + i + '-' + j + '</span>');
+                }
+              }
+              console.timeEnd('create Table');
+            </script>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="./lib/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="./listtable.min.js"></script>
+    
+
+<script>
+// listtable.table.set($('#test-list-table'));
+console.time('constract ListTable');
+var listTable = new listtable.class.ListTable('test-list-table');
+console.timeEnd('constract ListTable');
+//サンプルソート
+console.time('get sort data');
+var sortdata = listTable.sortData([{keyname: 'col1', order: listtable.const.ORDER_DESC}]);
+console.timeEnd('get sort data');
+
+console.time('sort table');
+// listTable.sortTable(sortdata);
+console.timeEnd('sort table');
+</script>
   </body>
 </html>
