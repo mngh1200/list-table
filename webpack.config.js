@@ -17,7 +17,7 @@ module.exports = [
   },
   {
     entry: {
-      style: "./src/sass/style.scss", // トランスパイル対象
+      style: "./src/sass/listtable.scss", // トランスパイル対象
     },
     output: {
       path: path.resolve(__dirname, 'dist')
@@ -37,6 +37,33 @@ module.exports = [
     plugins:[
       // cssの出力先を指定する
       new MiniCssExtractPlugin({ filename: 'css/listtable.min.css' }),
+    ],
+    optimization: {
+      minimizer: [new OptimizeCSSAssetsPlugin({})],
+    },
+  },
+  {
+    entry: {
+      style: "./src/sass/style.scss", // トランスパイル対象
+    },
+    output: {
+      path: path.resolve(__dirname, 'dist')
+    },
+    module: {
+      rules: [
+        {
+          test: /\.scss$/,
+          use: [
+            { loader: MiniCssExtractPlugin.loader },
+            { loader: 'css-loader' },
+            { loader: 'sass-loader' },
+          ],
+        }
+      ],
+    },
+    plugins:[
+      // cssの出力先を指定する
+      new MiniCssExtractPlugin({ filename: 'css/style.css' }),
     ],
     optimization: {
       minimizer: [new OptimizeCSSAssetsPlugin({})],

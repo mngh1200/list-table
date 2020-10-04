@@ -1,0 +1,33 @@
+.list-table {
+  font-size: 16px;
+
+  * {
+    box-sizing: border-box;
+  }
+  
+  &__head {
+    margin: 0;
+    padding: 0;
+  }
+
+  &__body {
+    margin: 0;
+    padding: 0;
+  }
+
+  &__list {
+    display: flex;
+    border-bottom: 1px solid #f1f1f1;
+
+    &--head {
+      background: #eee;
+      border-bottom: 1px solid #ebebeb;
+    }
+
+    span {
+      padding: 8px 12px;
+      flex: 0 0 120px; // 仮
+ 
+    }
+  }
+}
