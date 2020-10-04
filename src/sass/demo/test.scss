@@ -1,0 +1,20 @@
+.list-table {
+  width: 620px;
+  
+  &__head {
+  }
+
+  &__body {
+    height: 450px;
+  }
+
+  &__list {
+    &--head {
+    }
+
+    span {
+      flex: 0 0 120px;
+      max-width: 120px;
+    }
+  }
+}
