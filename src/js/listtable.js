@@ -10,9 +10,34 @@ window.listtable = window.listtable || {};
  */
 window.listtable.class = window.listtable.class || {};
 
-listtable.class.ListTable = function(id, settings) {
+listtable.class.ListTable = function(id, settings, datas) {
   this.id = id;
   var $table = $('#'+id);
+  // settings、datasが存在する場合はDOM生成
+  if (settings != null && settings.colSettings != null && Array.isArray(settings.colSettings) && datas != null) {
+    var html = '';
+    html += '<ul><li>';
+    var csLen = settings.colSettings.length;
+    for (var i = 0; i < csLen; i++) {
+      var colName = settings.colSettings[i].name;
+      html += '<span>' + colName + '</span>';
+    }
+    html += '</li></ul>';
+    html += '<ul>';
+    var dataLen = datas.length;
+    for (var i = 0; i < dataLen; i++) {
+      var data = datas[i];
+      html += '<li>';
+      for (var j = 0; j < csLen; j++) {
+        var colId = settings.colSettings[j].id;
+        var value = data[colId];
+        html += '<span>' + value + '</span>';
+      }
+      html += '</li>';
+    }
+    html += '</ul>';
+    $table.html(html);
+  }
   // 要素取得 + クラスセット
   this.$table = $table.addClass('list-table');
   this.$thead = $table.children('ul').eq(0).addClass('list-table__head');
@@ -33,7 +58,7 @@ listtable.class.ListTable = function(id, settings) {
     for (var i = 0; i < colLen; i++) {
       this.settings.colSettings.push({
         id: 'col' + (i + 1),
-        type: listtable.const.DEF_STATE.COL_TYPE
+        type: listtable.const.DEF_STATE.COL_TYPE.TEXT
       });
     }
   }
@@ -55,7 +80,7 @@ listtable.class.ListTable = function(id, settings) {
       var $cell = $cellArr.eq(j);
       var colSetting = this.settings.colSettings[j];
       if (colSetting.id && colSetting.type) {
-        if (colSetting.type == listtable.const.DEF_STATE.COL_TYPE) {
+        if (colSetting.type == listtable.const.DEF_STATE.COL_TYPE.TEXT) {
           // text型
           rowData[colSetting.id] = $cell.text();
         }
