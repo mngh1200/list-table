@@ -66,3 +66,4 @@ listtable.class.ListTable = function(id, settings) {
 
 require('./_listtable.define.js');
 require('./_listtable.sort.js');
+require('./_listtable.filter.js');
