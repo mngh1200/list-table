@@ -33,6 +33,21 @@ listtable.const.DEF_STATE.COL_TYPE = {
 };
 
 /**
+ * 列スタイルの定義
+ * @const
+ */
+listtable.const.DEF_STATE.COL_STYLE = {
+  FIXED: 'fixed',
+  RATE: 'rate'
+};
+
+/**
+ * デフォルトの列幅
+ * @const
+ */
+listtable.const.DEFAULT_COL_WIDTH = 120;
+
+/**
  * ソート順昇順を示す定数
  * @const
  */

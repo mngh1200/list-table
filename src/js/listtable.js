@@ -52,15 +52,18 @@ listtable.class.ListTable = function(id, settings, datas) {
 
   // 全般設定    settings = settings || {};
   this.settings = $.extend(listtable.const.DEF_STATE.DEF_SETTINGS, settings);
-  // 任意の列設定がない場合はタグ構造から生成
-  if (this.settings.colSettings == null || Array.isArray(this.settings.colSettings)) {
-    this.settings.colSettings = [];
-    for (var i = 0; i < colLen; i++) {
-      this.settings.colSettings.push({
-        id: 'col' + (i + 1),
-        type: listtable.const.DEF_STATE.COL_TYPE.TEXT
-      });
+
+  // 列定義セット（設定されていない場合）
+  if (this.settings.colSettings == null || !Array.isArray(this.settings.colSettings)) {
+    this.settings.colSettings = new Array(colLen);
+  }
+
+  for (var i = 0; i < colLen; i++) {
+    var defColSetting = {
+      id: 'col' + (i + 1),
+      type: listtable.const.DEF_STATE.COL_TYPE.TEXT
     }
+    this.settings.colSettings[i] = $.extend(defColSetting, this.settings.colSettings[i] || {});
   }
 
   // データセット
@@ -86,6 +89,29 @@ listtable.class.ListTable = function(id, settings, datas) {
         }
       }
     }
+  }
+
+  if (this.settings.colStyle == listtable.const.DEF_STATE.COL_STYLE.RATE) {
+    // 列幅を比率で指定
+  } else {
+    var totalWidth = 0;
+    // 列幅を固定幅で指定
+    for (var i = 0; i < colLen; i++) {
+      var colSetting = this.settings.colSettings[i];
+      var colWidth = colSetting.width;
+
+      // 値未指定時
+      if (!$.isNumeric(colWidth)) {
+        colWidth = listtable.const.DEFAULT_COL_WIDTH;
+      }
+
+      totalWidth += colWidth;
+      this.$table.find('.list-table__list span:nth-of-type(' + (i + 1) + ')').css({
+        'flex': '0 0 ' + colWidth + 'px',
+        'max-width': colWidth + 'px'
+      });
+    }
+    this.$table.width(totalWidth + 20);
   }
 };
 
