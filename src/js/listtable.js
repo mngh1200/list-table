@@ -73,7 +73,7 @@ listtable.class.ListTable = function(id, settings, datas) {
     // dataオブジェクトと行要素を紐付けるidをセット
     var id = 'r' + (i + 1);
     this.data[id] = {};
-    $row.attr('id', 'listtable-id--' + id);
+    $row.attr('id', this.id + '__' + id);
     $row.data('listtable-id', id);
     // dataに各セルの情報セット
     var rowData = this.data[id];

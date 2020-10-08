@@ -78,7 +78,7 @@ listtable.class.ListTable.prototype.sortTable = function(sortArray) {
   for (var i = 0; i < len; i++) {
     count++;
     var rowId = sortArray[i];
-    var $row = $('#listtable-id--' + rowId);
+    var $row = $('#' + this.id + '__' + rowId);
 
     if ($row.length) {
       $firstRow = $row;
@@ -90,7 +90,7 @@ listtable.class.ListTable.prototype.sortTable = function(sortArray) {
   var rows = [];
   for (var i = count; i < len; i++) {
     var rowId = sortArray[i];
-    rows.push($('#listtable-id--' + rowId));
+    rows.push($('#' + this.id + '__' + rowId));
   }
 
   $firstRow.after(rows);
