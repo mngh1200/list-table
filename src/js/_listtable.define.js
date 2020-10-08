@@ -43,3 +43,15 @@ listtable.const.ORDER_ASC = 0;
  * @const
  */
 listtable.const.ORDER_DESC = 1;
+
+/**
+ * フィルター完全一致を示す定数
+ * @const
+ */
+listtable.const.FILTER_FULL = 1;
+
+/**
+ * フィルター部分一致を示す定数
+ * @const
+ */
+listtable.const.FILTER_PART = 2;
