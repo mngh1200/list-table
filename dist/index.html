@@ -9,7 +9,7 @@
   </head>
   <body>
     <div class="content">
-      <input type=button value="ソートテスト" onclick="listTable.sortTable(sortdata);"/>
+      <input type=button value="ソートテスト" onclick="listTable.sortTable(sortdata);listTable2.sortTable(sortdata2);"/>
       <div class="table-area">
         <div id="test-list-table">
           <ul>
@@ -39,6 +39,10 @@
           </ul>
         </div>
       </div>
+      <div class="table-area">
+        <div id="test-list-table2">
+        </div>
+      </div>
     </div>
     <script type="text/javascript" src="./lib/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="./listtable.min.js"></script>
@@ -57,6 +61,34 @@ console.timeEnd('get sort data');
 console.time('sort table');
 // listTable.sortTable(sortdata);
 console.timeEnd('sort table');
+
+var settings = {};
+settings.colSettings = [];
+var datas = [];
+for (var i = 0; i < 10; i++) {
+  settings.colSettings.push({
+    id: 'column' + (i+1),
+    name: '列' + (i+1),
+    type: listtable.const.DEF_STATE.COL_TYPE.TEXT
+  });
+}
+
+for (var i = 0; i < 2000; i++) {
+  var data = {};
+  for (var j = 0; j < 9; j++) {
+    data['column' + (j+1)] = 'データ' + (i+1) + '_' + (j+1);
+  }
+  data['column10'] = Math.floor( Math.random() * (99999 + 1 - 1) ) + 1;
+  datas.push(data);
+}
+console.time('recreate listtable');
+var listTable2 = new listtable.class.ListTable('test-list-table2', settings, datas);
+console.timeEnd('recreate listtable');
+
+console.time('get sort data2');
+var sortdata2 = listTable2.sortData([{keyname: 'column10', order: listtable.const.ORDER_DESC}]);
+console.timeEnd('get sort data2');
+
 </script>
   </body>
 </html>
