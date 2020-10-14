@@ -13,15 +13,6 @@ listtable.const = listtable.const || {};
 listtable.const.DEF_STATE = {};
 
 /**
- * listtableのデフォルト設定
- * @const
- */
-listtable.const.DEF_STATE.DEF_SETTINGS = {
-  height: 'auto',
-  colSettings: null // 列定義 [{id: ..., type, ...}, ...]のJSON配列
-};
-
-/**
  * 列の型idの定義
  * @const
  */
@@ -41,6 +32,19 @@ listtable.const.DEF_STATE.COL_STYLE = {
   FIXED: 'fixed',
   RATE: 'rate'
 };
+
+
+/**
+ * listtableのsettingsのデフォルト設定
+ * @const
+ */
+listtable.const.DEF_STATE.DEF_SETTINGS = {
+  height: 'auto', // テーブル高さ (auto or int)
+  colStyle: listtable.const.DEF_STATE.COL_STYLE.FIXED, // 列スタイル (fixed or rate)
+  colSettings: null // 列定義 [{id: ..., type, ...}, ...]のJSON配列
+};
+
+
 
 /**
  * デフォルトの列幅
@@ -71,3 +75,5 @@ listtable.const.FILTER_FULL = 1;
  * @const
  */
 listtable.const.FILTER_PART = 2;
+
+

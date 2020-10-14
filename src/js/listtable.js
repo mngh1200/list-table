@@ -70,21 +70,34 @@ listtable.class.ListTable = function(id, settings, datas) {
   // テーブル幅
   var tableWidth = 0;
 
+  // 列幅、テーブル幅取得
+  for (var i = 0; i < colLen; i++) {
+    var colSetting = this.settings.colSettings[i];
+
+    // 値未指定時
+    if (!$.isNumeric(colWidth)) {
+      this.settings.colSettings[i].width = listtable.const.DEFAULT_COL_WIDTH;
+    }
+
+    tableWidth += this.settings.colSettings[i].width;
+  }
+
   if (this.settings.colStyle == listtable.const.DEF_STATE.COL_STYLE.RATE) {
     // 列幅を比率で指定
+    for (var i = 0; i < colLen; i++) {
+      var colWidth = this.settings.colSettings[i].width;
+      var colWidthPercent = (colWidth * 100 / tableWidth);
+      this.$table.find('.list-table__list span:nth-of-type(' + (i + 1) + ')').css({
+        'flex': '0 0 ' + colWidthPercent + '%',
+        'max-width': colWidthPercent + '%'
+      });
+    }
+
+    tableWidth = 'auto';
   } else {
-    
     // 列幅を固定幅で指定
     for (var i = 0; i < colLen; i++) {
-      var colSetting = this.settings.colSettings[i];
-      var colWidth = colSetting.width;
-
-      // 値未指定時
-      if (!$.isNumeric(colWidth)) {
-        colWidth = listtable.const.DEFAULT_COL_WIDTH;
-      }
-
-      tableWidth += colWidth;
+      var colWidth = this.settings.colSettings[i].width;
       this.$table.find('.list-table__list span:nth-of-type(' + (i + 1) + ')').css({
         'flex': '0 0 ' + colWidth + 'px',
         'max-width': colWidth + 'px'

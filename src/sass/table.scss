@@ -9,6 +9,7 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
+    /* IE考慮、スクロールバー */
     @media all and (-ms-high-contrast: none) {
       margin-right: 17px;
     }

@@ -51,7 +51,7 @@
 <script>
 // listtable.table.set($('#test-list-table'));
 console.time('constract listTable');
-var listTable = new listtable.class.ListTable('test-list-table', {height: 300});
+var listTable = new listtable.class.ListTable('test-list-table', {height: 300, colStyle: listtable.const.DEF_STATE.COL_STYLE.RATE});
 console.timeEnd('constract listTable');
 
 var settings = {};
@@ -73,8 +73,8 @@ for (var i = 0; i < 100; i++) {
   data['column10'] = Math.floor( Math.random() * (99999 + 1 - 1) ) + 1;
   datas.push(data);
 }
-settings.width = '500';
-settings.height = '400';
+settings.width = 500;
+settings.height = 300;
 console.time('constract listtable2');
 var listTable2 = new listtable.class.ListTable('test-list-table2', settings, datas);
 console.timeEnd('constract listtable2');
