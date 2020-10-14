@@ -9,6 +9,9 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
+    @media all and (-ms-high-contrast: none) {
+      margin-right: 17px;
+    }
   }
 
   &__body {
