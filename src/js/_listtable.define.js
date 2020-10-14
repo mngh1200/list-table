@@ -17,6 +17,7 @@ listtable.const.DEF_STATE = {};
  * @const
  */
 listtable.const.DEF_STATE.DEF_SETTINGS = {
+  height: 'auto',
   colSettings: null // 列定義 [{id: ..., type, ...}, ...]のJSON配列
 };
 

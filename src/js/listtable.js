@@ -67,6 +67,7 @@ listtable.class.ListTable = function(id, settings, datas) {
     this.settings.colSettings[i] = $.extend(defColSetting, this.settings.colSettings[i] || {});
   }
 
+  // テーブル幅
   var tableWidth = 0;
 
   if (this.settings.colStyle == listtable.const.DEF_STATE.COL_STYLE.RATE) {
@@ -96,6 +97,11 @@ listtable.class.ListTable = function(id, settings, datas) {
   // テーブル幅
   tableWidth = this.settings.width || tableWidth;
   this.$table.width(tableWidth);
+
+  // テーブル高さ
+  if (settings.height != 'auto') {
+    this.$tbody.height(settings.height);
+  }
 
   // データセット
   this.data = {};
