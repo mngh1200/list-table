@@ -113,7 +113,7 @@ listtable.class.ListTable = function(id, settings, datas) {
 
   // テーブル高さ
   if (settings.height != 'auto') {
-    this.$tbody.height(settings.height);
+    this.$table.height(settings.height);
   }
 
   // データセット
