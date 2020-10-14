@@ -73,7 +73,7 @@ for (var i = 0; i < 10; i++) {
   });
 }
 
-for (var i = 0; i < 2000; i++) {
+for (var i = 0; i < 100; i++) {
   var data = {};
   for (var j = 0; j < 9; j++) {
     data['column' + (j+1)] = 'データ' + (i+1) + '_' + (j+1);
@@ -81,6 +81,7 @@ for (var i = 0; i < 2000; i++) {
   data['column10'] = Math.floor( Math.random() * (99999 + 1 - 1) ) + 1;
   datas.push(data);
 }
+settings.width = '500';
 console.time('recreate listtable');
 var listTable2 = new listtable.class.ListTable('test-list-table2', settings, datas);
 console.timeEnd('recreate listtable');

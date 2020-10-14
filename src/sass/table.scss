@@ -8,12 +8,15 @@
   &__head {
     margin: 0;
     padding: 0;
+    overflow: hidden;
   }
 
   &__body {
     margin: 0;
     padding: 0;
-    overflow-y: auto;
+    overflow-x: auto;
+    overflow-y: scroll;
+    overflow-y: overlay;
   }
 
   &__list {
@@ -21,8 +24,12 @@
     border-bottom: 1px solid #f1f1f1;
 
     &--head {
-      background: #eee;
       border-bottom: 1px solid #ebebeb;
+      background: #eee;
+
+      span {
+        background: #eee;
+      }
     }
 
     span {

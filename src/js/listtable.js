@@ -11,6 +11,7 @@ window.listtable = window.listtable || {};
 window.listtable.class = window.listtable.class || {};
 
 listtable.class.ListTable = function(id, settings, datas) {
+  var self = this;
   this.id = id;
   var $table = $('#'+id);
   // settings、datasが存在する場合はDOM生成
@@ -66,6 +67,36 @@ listtable.class.ListTable = function(id, settings, datas) {
     this.settings.colSettings[i] = $.extend(defColSetting, this.settings.colSettings[i] || {});
   }
 
+  var tableWidth = 0;
+
+  if (this.settings.colStyle == listtable.const.DEF_STATE.COL_STYLE.RATE) {
+    // 列幅を比率で指定
+  } else {
+    
+    // 列幅を固定幅で指定
+    for (var i = 0; i < colLen; i++) {
+      var colSetting = this.settings.colSettings[i];
+      var colWidth = colSetting.width;
+
+      // 値未指定時
+      if (!$.isNumeric(colWidth)) {
+        colWidth = listtable.const.DEFAULT_COL_WIDTH;
+      }
+
+      tableWidth += colWidth;
+      this.$table.find('.list-table__list span:nth-of-type(' + (i + 1) + ')').css({
+        'flex': '0 0 ' + colWidth + 'px',
+        'max-width': colWidth + 'px'
+      });
+    }
+
+    tableWidth = tableWidth + 18; // スクロールバー分の調整
+  }
+
+  // テーブル幅
+  tableWidth = this.settings.width || tableWidth;
+  this.$table.width(tableWidth);
+
   // データセット
   this.data = {};
   for (var i = 0; i < rowLen; i++) {
@@ -91,28 +122,11 @@ listtable.class.ListTable = function(id, settings, datas) {
     }
   }
 
-  if (this.settings.colStyle == listtable.const.DEF_STATE.COL_STYLE.RATE) {
-    // 列幅を比率で指定
-  } else {
-    var totalWidth = 0;
-    // 列幅を固定幅で指定
-    for (var i = 0; i < colLen; i++) {
-      var colSetting = this.settings.colSettings[i];
-      var colWidth = colSetting.width;
+  // スクロールイベント
+  this.$tbody.scroll(function() {
+    self.$thead.scrollLeft(self.$tbody.scrollLeft());
+  });
 
-      // 値未指定時
-      if (!$.isNumeric(colWidth)) {
-        colWidth = listtable.const.DEFAULT_COL_WIDTH;
-      }
-
-      totalWidth += colWidth;
-      this.$table.find('.list-table__list span:nth-of-type(' + (i + 1) + ')').css({
-        'flex': '0 0 ' + colWidth + 'px',
-        'max-width': colWidth + 'px'
-      });
-    }
-    this.$table.width(totalWidth + 20);
-  }
 };
 
 require('./_listtable.define.js');
