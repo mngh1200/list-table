@@ -52,7 +52,7 @@ listtable.class.ListTable = function(id, settings, datas) {
   var rowLen = this.$tr.length; // 行数
 
   // 全般設定    settings = settings || {};
-  this.settings = $.extend(listtable.const.DEF_STATE.DEF_SETTINGS, settings);
+  this.settings = $.extend({}, listtable.const.DEF_STATE.DEF_SETTINGS, settings);
 
   // 列定義セット（設定されていない場合）
   if (this.settings.colSettings == null || !Array.isArray(this.settings.colSettings)) {
