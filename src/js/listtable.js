@@ -132,10 +132,24 @@ listtable.class.ListTable = function(id, settings, datas) {
     for (var j = 0; j < colLen; j++) {
       var $cell = $cellArr.eq(j);
       var colSetting = this.settings.colSettings[j];
+      $cell.data('listtable-col-id', j);
       if (colSetting.id && colSetting.type) {
+        if (!$cell.children().eq(0).is('p')) {
+          $cell.html('<p>' + $cell.html() + '</p>');
+        }
         if (colSetting.type == listtable.const.DEF_STATE.COL_TYPE.TEXT) {
           // text型
           rowData[colSetting.id] = $cell.text();
+        } else if (colSetting.type == listtable.const.DEF_STATE.COL_TYPE.NUM) {
+          rowData[colSetting.id] = $cell.text().replace(/,/g, '');
+          // settingsで桁区切りオプションがtrueの場合
+          if ( ('settings' in colSetting) && ('comma' in colSetting.settings) && (colSetting.settings.comma) ) {
+            $cell.html('<p>' + rowData[colSetting.id].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,') + '</p>');
+          }
+        } else if (colSetting.type == listtable.const.DEF_STATE.COL_TYPE.TEXTAREA) {
+          rowData[colSetting.id] = $cell.text();
+          // textarea
+          $cell.html('<pre>' + rowData[colSetting.id] + '</pre>');
         }
       }
     }
@@ -146,6 +160,39 @@ listtable.class.ListTable = function(id, settings, datas) {
     self.$thead.scrollLeft(self.$tbody.scrollLeft());
   });
 
+  // セルdblclickで編集モード
+  this.$table.on('dblclick', '.list-table__body .list-table__list span', function() {
+    var colIdx = $(this).data('listtable-col-id');
+    var colSetting  = self.settings.colSettings[colIdx];
+    var colId = colSetting.id;
+    var rowId = $(this).parent().data('listtable-id');
+    var html = '';
+    var value = self.data[rowId][colId];
+    if(colSetting.type === listtable.const.DEF_STATE.COL_TYPE.TEXT) {
+      html += '<input type="text" style="width:100%;" id="' +
+      self.id + '__edit__' + rowId + '__' + colSetting.id + '" class="list-table__edit" data-listtable-col-id="' +
+      colIdx + '" data-listtable-row-id="' + rowId + '" value="' + value + '" />';
+    } else {
+      html += value;
+    }
+    $(this).find('p').eq(0).html(html).children().eq(0).focus();
+  });
+
+  // 編集からフォーカス外すと表示モードへ
+  this.$table.on('blur', '.list-table__edit', function() {
+    var colId = $(this).data('listtable-col-id');
+    var rowId = $(this).data('listtable-row-id');
+    var value = $(this).val();
+    var colSetting = self.settings.colSettings[colId];
+    self.data[rowId][colId] = value;
+    var html = '';
+    if(colSetting.type === listtable.const.DEF_STATE.COL_TYPE.TEXT) {
+      html += value;
+    } else {
+      html += value;
+    }
+    $(this).parent().html(html);
+  });
 };
 
 require('./_listtable.define.js');
