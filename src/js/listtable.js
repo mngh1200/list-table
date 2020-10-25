@@ -10,6 +10,7 @@ window.listtable = window.listtable || {};
  */
 window.listtable.class = window.listtable.class || {};
 
+
 listtable.class.ListTable = function(id, settings, datas) {
   var self = this;
   this.id = id;
@@ -54,62 +55,8 @@ listtable.class.ListTable = function(id, settings, datas) {
   // 全般設定    settings = settings || {};
   this.settings = $.extend({}, listtable.const.DEF_STATE.DEF_SETTINGS, settings);
 
-  // 列定義セット（設定されていない場合）
-  if (this.settings.colSettings == null || !Array.isArray(this.settings.colSettings)) {
-    this.settings.colSettings = new Array(colLen);
-  }
-
-  for (var i = 0; i < colLen; i++) {
-    var defColSetting = {
-      id: 'col' + (i + 1),
-      type: listtable.const.DEF_STATE.COL_TYPE.TEXT
-    }
-    this.settings.colSettings[i] = $.extend(defColSetting, this.settings.colSettings[i] || {});
-  }
-
-  // テーブル幅
-  var tableWidth = 0;
-
-  // 列幅、テーブル幅取得
-  for (var i = 0; i < colLen; i++) {
-    var colSetting = this.settings.colSettings[i];
-
-    // 値未指定時
-    if (!$.isNumeric(colWidth)) {
-      this.settings.colSettings[i].width = listtable.const.DEFAULT_COL_WIDTH;
-    }
-
-    tableWidth += this.settings.colSettings[i].width;
-  }
-
-  if (this.settings.colStyle == listtable.const.DEF_STATE.COL_STYLE.RATE) {
-    // 列幅を比率で指定
-    for (var i = 0; i < colLen; i++) {
-      var colWidth = this.settings.colSettings[i].width;
-      var colWidthPercent = (colWidth * 100 / tableWidth);
-      this.$table.find('.list-table__list span:nth-of-type(' + (i + 1) + ')').css({
-        'flex': '0 0 ' + colWidthPercent + '%',
-        'max-width': colWidthPercent + '%'
-      });
-    }
-
-    tableWidth = 'auto';
-  } else {
-    // 列幅を固定幅で指定
-    for (var i = 0; i < colLen; i++) {
-      var colWidth = this.settings.colSettings[i].width;
-      this.$table.find('.list-table__list span:nth-of-type(' + (i + 1) + ')').css({
-        'flex': '0 0 ' + colWidth + 'px',
-        'max-width': colWidth + 'px'
-      });
-    }
-
-    tableWidth = tableWidth + 18; // スクロールバー分の調整
-  }
-
-  // テーブル幅
-  tableWidth = this.settings.width || tableWidth;
-  this.$table.width(tableWidth);
+  // 列幅、テーブル幅のセット（.col.js）
+  this._setCol();
 
   // テーブル高さ
   if (settings.height != 'auto') {
@@ -148,6 +95,8 @@ listtable.class.ListTable = function(id, settings, datas) {
 
 };
 
+
 require('./_listtable.define.js');
+require('./_listtable.col.js');
 require('./_listtable.sort.js');
 require('./_listtable.filter.js');

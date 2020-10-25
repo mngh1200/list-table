@@ -49,9 +49,20 @@
     
 
 <script>
-// listtable.table.set($('#test-list-table'));
+var settings1 = {height: 300, colSettings: []};
+for (var i = 0; i < COL_LEN; i++) {
+  settings1.colSettings.push({
+    id: 'column' + (i+1),
+    name: '列' + (i+1),
+    type: listtable.const.DEF_STATE.COL_TYPE.TEXT
+  });
+}
+
+settings1.colSettings[0].width = '20%';
+settings1.colSettings[1].width = '10%';
+
 console.time('constract listTable');
-var listTable = new listtable.class.ListTable('test-list-table', {height: 300, colStyle: listtable.const.DEF_STATE.COL_STYLE.RATE});
+var listTable = new listtable.class.ListTable('test-list-table', settings1);
 console.timeEnd('constract listTable');
 
 var settings = {};
