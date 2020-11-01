@@ -12,6 +12,15 @@ window.listtable.class = window.listtable.class || {};
 
 listtable.class.ListTable = function(id, settings, datas) {
   var self = this;
+  
+  // フォーマット関数
+  var formatNum = function(value, colSetting) {
+    if (colSetting == null) return value;
+    if ( ('settings' in colSetting) && ('comma' in colSetting.settings) && (colSetting.settings.comma) ) {
+      return String(value).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    }
+  };
+  
   this.id = id;
   var $table = $('#'+id);
   // settings、datasが存在する場合はDOM生成
@@ -137,19 +146,18 @@ listtable.class.ListTable = function(id, settings, datas) {
         if (!$cell.children().eq(0).is('p')) {
           $cell.html('<p>' + $cell.html() + '</p>');
         }
+        var $cellP = $cell.children().eq(0);
         if (colSetting.type == listtable.const.DEF_STATE.COL_TYPE.TEXT) {
           // text型
-          rowData[colSetting.id] = $cell.text();
+          rowData[colSetting.id] = $cellP.text();
         } else if (colSetting.type == listtable.const.DEF_STATE.COL_TYPE.NUM) {
-          rowData[colSetting.id] = $cell.text().replace(/,/g, '');
+          rowData[colSetting.id] = $cellP.text().replace(/,/g, '');
           // settingsで桁区切りオプションがtrueの場合
-          if ( ('settings' in colSetting) && ('comma' in colSetting.settings) && (colSetting.settings.comma) ) {
-            $cell.html('<p>' + rowData[colSetting.id].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,') + '</p>');
-          }
+          $cellP.html( formatNum(rowData[colSetting.id], colSetting) );
         } else if (colSetting.type == listtable.const.DEF_STATE.COL_TYPE.TEXTAREA) {
-          rowData[colSetting.id] = $cell.text();
+          rowData[colSetting.id] = $cellP.text();
           // textarea
-          $cell.html('<pre>' + rowData[colSetting.id] + '</pre>');
+          $cellP.addClass('list-table__cell list-table__cell--textarea').html(rowData[colSetting.id]);
         }
       }
     }
@@ -160,8 +168,8 @@ listtable.class.ListTable = function(id, settings, datas) {
     self.$thead.scrollLeft(self.$tbody.scrollLeft());
   });
 
-  // セルdblclickで編集モード
-  this.$table.on('dblclick', '.list-table__body .list-table__list span', function() {
+  // 編集モードイベント追加
+  this.$table.on('editStart', '.list-table__body .list-table__list span', function() {
     var colIdx = $(this).data('listtable-col-id');
     var colSetting  = self.settings.colSettings[colIdx];
     var colId = colSetting.id;
@@ -170,28 +178,49 @@ listtable.class.ListTable = function(id, settings, datas) {
     var value = self.data[rowId][colId];
     if(colSetting.type === listtable.const.DEF_STATE.COL_TYPE.TEXT) {
       html += '<input type="text" style="width:100%;" id="' +
-      self.id + '__edit__' + rowId + '__' + colSetting.id + '" class="list-table__edit" data-listtable-col-id="' +
+      self.id + '__edit__' + rowId + '__' + colSetting.id + '" class="list-table__edit list-table__edit--text" data-listtable-col-id="' +
       colIdx + '" data-listtable-row-id="' + rowId + '" value="' + value + '" />';
+    } else if(colSetting.type === listtable.const.DEF_STATE.COL_TYPE.NUM) {
+      html += '<input type="text" style="width:100%;" id="' +
+      self.id + '__edit__' + rowId + '__' + colSetting.id + '" class="list-table__edit list-table__edit--num" data-listtable-col-id="' +
+      colIdx + '" data-listtable-row-id="' + rowId + '" value="' + value + '" />';
+    }  else if(colSetting.type === listtable.const.DEF_STATE.COL_TYPE.TEXTAREA) {
+      html += '<textarea style="width:100%;" id="' +
+      self.id + '__edit__' + rowId + '__' + colSetting.id + '" class="list-table__edit list-table__edit--textarea" data-listtable-col-id="' +
+      colIdx + '" data-listtable-row-id="' + rowId + '">' + value + '</textarea>';
     } else {
       html += value;
     }
     $(this).find('p').eq(0).html(html).children().eq(0).focus();
   });
 
-  // 編集からフォーカス外すと表示モードへ
-  this.$table.on('blur', '.list-table__edit', function() {
+  // 編集終了イベント設定
+  this.$table.on('editEnd', '.list-table__edit', function() {
     var colId = $(this).data('listtable-col-id');
     var rowId = $(this).data('listtable-row-id');
     var value = $(this).val();
     var colSetting = self.settings.colSettings[colId];
-    self.data[rowId][colId] = value;
+    self.data[rowId][colSetting.id] = value;
     var html = '';
     if(colSetting.type === listtable.const.DEF_STATE.COL_TYPE.TEXT) {
+      html += value;
+    } else if(colSetting.type === listtable.const.DEF_STATE.COL_TYPE.NUM) {
+      html += formatNum(value, colSetting);
+    } else if(colSetting.type === listtable.const.DEF_STATE.COL_TYPE.TEXTAREA) {
       html += value;
     } else {
       html += value;
     }
     $(this).parent().html(html);
+  });
+  
+  // 編集開始終了イベント
+  this.$table.on('dblclick', '.list-table__body .list-table__list span', function() {
+    $(this).trigger('editStart');
+  });
+  
+  this.$table.on('blur', '.list-table__edit', function() {
+    $(this).trigger('editEnd');
   });
 };
 

@@ -57,13 +57,28 @@ console.timeEnd('constract listTable');
 var settings = {};
 settings.colSettings = [];
 var datas = [];
-for (var i = 0; i < 10; i++) {
+for (var i = 0; i < 8; i++) {
   settings.colSettings.push({
     id: 'column' + (i+1),
     name: '列' + (i+1),
     type: listtable.const.DEF_STATE.COL_TYPE.TEXT
   });
 }
+
+  settings.colSettings.push({
+    id: 'column' + (9),
+    name: '列' + (9),
+    type: listtable.const.DEF_STATE.COL_TYPE.TEXTAREA
+  });
+  settings.colSettings.push({
+    id: 'column' + (10),
+    name: '列' + (10),
+    type: listtable.const.DEF_STATE.COL_TYPE.NUM,
+    settings: {
+      comma: true
+    }
+  });
+
 
 for (var i = 0; i < 100; i++) {
   var data = {};

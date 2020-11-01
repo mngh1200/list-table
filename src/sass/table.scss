@@ -43,4 +43,9 @@
       padding: 8px 12px;
     }
   }
+  &__cell {
+    &--textarea {
+      white-space: pre;
+    }
+  }
 }
