@@ -3,11 +3,9 @@ window.listtable.class = window.listtable.class || {};
 
 
 /**
-  * JSONデータメンバをフィルターする。
-  * filterKeysは次のように定義する<br/>
-  * [{keyname: 'column1', type:listtable.const.FILTER_FULL, value: ['1', 'A', 'データ']}, {keyname: 'column2', type:listtable.const.FILTER_PART, value: 'データ'}]
-  * @param {Array} newColSettings - セットする列幅セット
-  */
+ * テーブル列の設定（初期設定や変更時）  
+ * @param {Array} newColSettings - セットする列幅セット
+ **/
  listtable.class.ListTable.prototype._setCol = function(newColSettings) {
   var colLen = this.$tdHead.length; // 列数
   
